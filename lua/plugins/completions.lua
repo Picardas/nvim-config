@@ -129,6 +129,13 @@ return {
         opts = {
             history = true,
             delete_check_events = "TextChanged",
-        }
+        },
+        config = function(_, opts)
+            -- Highlight groups colourscheme specific
+            vim.cmd("hi link LuasnipInsertNodePassive Pmenu")
+            vim.cmd("hi link LuasnipSnippetPassive PmenuSel")
+
+            require("luasnip").setup(opts)
+        end
     }
 }
