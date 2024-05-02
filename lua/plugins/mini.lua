@@ -6,12 +6,6 @@ return {
         opts = {}
     },
     {
-        "echasnovski/mini.pairs",
-        version = "*",
-        event = { "BufReadPost", "BufNewFile" },
-        opts = {}
-    },
-    {
         "echasnovski/mini.clue",
         version = "*",
 

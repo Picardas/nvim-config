@@ -7,6 +7,7 @@ return {
             vim.o.statusline = " "
         end
     end,
+
     opts = {
         options = {
             section_separators = "",
