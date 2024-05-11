@@ -90,7 +90,11 @@ return {
 
             -- Configure language servers here
             local servers = {
-                basedpyright = {},
+                basedpyright = {
+                    analysis = {
+                        typeCheckingMode = "standard"
+                    }
+                },
                 lua_ls = {},
                 powershell_es = {}
             }

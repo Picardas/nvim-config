@@ -44,10 +44,18 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 -- Remove trailing whitespace on save
 local whitespace_group = vim.api.nvim_create_augroup("TrimWhitespace", { clear = true })
--- end of line
-vim.api.nvim_create_autocmd("BufWritePre", { command = [[:%s/\s\+$//e]], group = whitespace_group, })
---end of file
-vim.api.nvim_create_autocmd("BufWritePre", { command = [[:%s#\($\n\s*\)\+\%$##e]], group = whitespace_group, })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = { "*" },
+    callback = function()
+        local cursorPos = vim.fn.getpos(".")
+        pcall(function()
+            vim.cmd([[:%s/\s\+$//e]])
+            vim.cmd([[:%s#\($\n\s*\)\+\%$##e]])
+        end)
+        vim.fn.setpos(".", cursorPos)
+    end,
+    group = whitespace_group
+})
 
 -- Set formating settings
 local comment_group = vim.api.nvim_create_augroup("FormatOptions", { clear = true })
