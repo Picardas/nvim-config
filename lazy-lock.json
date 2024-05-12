@@ -28,5 +28,6 @@
   "toggleterm.nvim": { "branch": "main", "commit": "066cccf48a43553a80a210eb3be89a15d789d6e6" },
   "trouble.nvim": { "branch": "dev", "commit": "b4b9a11b3578d510963f6f681fecb4631ae992c3" },
   "vim-illuminate": { "branch": "master", "commit": "e522e0dd742a83506db0a72e1ced68c9c130f185" },
+  "virtcolumn.nvim": { "branch": "main", "commit": "4d385b4aa42aa3af6fa2cb8527462fa4badbd163" },
   "zen-mode.nvim": { "branch": "main", "commit": "78557d972b4bfbb7488e17b5703d25164ae64e6a" }
 }

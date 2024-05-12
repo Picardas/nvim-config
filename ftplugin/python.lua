@@ -1,5 +1,5 @@
 -- Python Specific Settings
-vim.opt_local.colorcolumn = "80"
+vim.opt_local.colorcolumn = "79"
 vim.opt_local.textwidth = 72
 vim.opt.wildignore = "__pycache__" -- Ignore python compiled files
 vim.opt.wildignore:append { "*.o", "*.pyc", "*pycache*" } -- And more

@@ -48,9 +48,6 @@ vim.opt.smartindent = true
 vim.opt.shiftwidth = 4
 vim.opt.shiftround = true
 
--- Set ruler at column 101
-vim.opt_local.colorcolumn = "101"
-
 -- Time in ms, if nothing is type, that swap file will be updated (default 4000)
 -- vim.opt.updatetime = 250
 
@@ -68,8 +65,12 @@ vim.cmd.aunmenu{ "PopUp.-1-" }
 -- Improve wordwrap breaks
 vim.opt.linebreak = true
 
--- Default text width settings
-vim.opt_local.colorcolumn = "101"
+
+
+-- Using virtcolumn so line shown after character
+vim.opt_local.colorcolumn = "100"
+
+-- Default textwidth, autoformating only comments using formatoptions autocmd
 vim.opt_local.textwidth = 100
 
 -- Language for spellchecking
