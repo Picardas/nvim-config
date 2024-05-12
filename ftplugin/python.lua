@@ -1,6 +1,8 @@
 -- Python Specific Settings
 vim.opt_local.colorcolumn = "80"
 vim.opt_local.textwidth = 72
+vim.opt.wildignore = "__pycache__" -- Ignore python compiled files
+vim.opt.wildignore:append { "*.o", "*.pyc", "*pycache*" } -- And more
 
 -- Use treesitter to enable textwidth for text when working on python docstrings, from nvim-cmp
 local comment_tw = vim.api.nvim_create_augroup("CommentTextWidth", { clear = true })

@@ -48,6 +48,9 @@ vim.opt.smartindent = true
 vim.opt.shiftwidth = 4
 vim.opt.shiftround = true
 
+-- Set ruler at column 101
+vim.opt_local.colorcolumn = "101"
+
 -- Time in ms, if nothing is type, that swap file will be updated (default 4000)
 -- vim.opt.updatetime = 250
 

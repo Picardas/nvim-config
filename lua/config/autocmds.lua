@@ -2,10 +2,10 @@
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
+    group = highlight_group,
     callback = function()
         vim.highlight.on_yank()
     end,
-    group = highlight_group,
 })
 
 -- Clear Highlights after search
@@ -18,9 +18,9 @@ local function manage_hlsearch(char)
 
     if vim.fn.mode() == 'n' then
         if not vim.tbl_contains(keys, key) then
-        vim.cmd([[ :set nohlsearch ]])
+            vim.opt.hlsearch = false
         elseif vim.tbl_contains(keys, key) then
-        vim.cmd([[ :set hlsearch ]])
+            vim.opt.hlsearch = true
         end
     end
 
@@ -31,21 +31,20 @@ vim.api.nvim_create_autocmd('CursorMoved', {
     group = hlsearch_group,
     callback = function()
         vim.on_key(manage_hlsearch, hl_ns)
-    end,
+    end
 })
 
 -- Remember last cursor position opening buffer
 local position_group = vim.api.nvim_create_augroup("PositionCursor", { clear = true })
-
 vim.api.nvim_create_autocmd("BufReadPost", {
-    command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]],
-    group = position_group
+    group = position_group,
+    command = [[if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif]]
 })
 
 -- Remove trailing whitespace on save
 local whitespace_group = vim.api.nvim_create_augroup("TrimWhitespace", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = { "*" },
+    group = whitespace_group,
     callback = function()
         local cursorPos = vim.fn.getpos(".")
         pcall(function()
@@ -53,32 +52,17 @@ vim.api.nvim_create_autocmd("BufWritePre", {
             vim.cmd([[:%s#\($\n\s*\)\+\%$##e]])
         end)
         vim.fn.setpos(".", cursorPos)
-    end,
-    group = whitespace_group
+    end
 })
 
 -- Set formating settings
-local comment_group = vim.api.nvim_create_augroup("FormatOptions", { clear = true })
-
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
-    command = [[set formatoptions-=o]],
-    group = comment_group,
-})
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
-    command = [[set formatoptions-=t]],
-    group = comment_group,
-})
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
-    command = [[set formatoptions-=l]],
-    group = comment_group,
-})
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
-    command = [[set formatoptions+=n]],
-    group = comment_group,
-})
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
-    command = [[set formatoptions+=1]],
-    group = comment_group,
+local format_group = vim.api.nvim_create_augroup("FormatOptions", { clear = true })
+vim.api.nvim_create_autocmd({"FileType"}, {
+    group = format_group,
+    callback = function()
+        vim.opt.formatoptions:append({ "1", "n" })
+        vim.opt.formatoptions:remove({ "o", "t", "l" })
+    end
 })
 
 -- Only show cursor line on active buffer
@@ -89,7 +73,7 @@ local set_cursorline = function(event, value, pattern)
         pattern = pattern,
         callback = function()
             vim.opt_local.cursorline = value
-        end,
+        end
     })
 end
 set_cursorline("WinLeave", false)
@@ -114,11 +98,11 @@ vim.api.nvim_create_autocmd("FileType", {
         "checkhealth",
         "neotest-summary",
         "neotest-output-panel",
-  },
-  callback = function(event)
+    },
+    callback = function(event)
         vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-  end,
+    end
 })
 
 -- Spell check in text filetypes
@@ -128,7 +112,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "gitcommit", "markdown" },
     callback = function()
         vim.opt_local.spell = true
-    end,
+    end
 })
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
@@ -141,7 +125,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         end
         local file = vim.uv.fs_realpath(event.match) or event.match
         vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-    end,
+    end
 })
 
 -- resize splits if window got resized
@@ -152,5 +136,5 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
         local current_tab = vim.fn.tabpagenr()
         vim.cmd("tabdo wincmd =")
         vim.cmd("tabnext " .. current_tab)
-    end,
+    end
 })

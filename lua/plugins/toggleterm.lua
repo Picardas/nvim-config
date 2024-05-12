@@ -11,7 +11,7 @@ return {
             "<leader>tt",
             function()
                 local term_size = math.floor(vim.api.nvim_win_get_height(0) * 0.3)
-                vim.cmd("ToggleTerm size=" .. term_size .. " direction=horizontal name=Terminal")
+                vim.cmd.ToggleTerm({ "size=" .. term_size, "direction=horizontal", "name=Terminal" })
             end,
             desc = "[T]oggle [T]erminal"
         }
