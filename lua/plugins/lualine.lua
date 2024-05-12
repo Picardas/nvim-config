@@ -2,6 +2,7 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     init = function()
+        -- Don't show statusline until lualine has loaded
         vim.g.lualine_laststatus = vim.o.laststatus
         if vim.fn.argc(-1) > 0 then
             vim.o.statusline = " "

@@ -42,9 +42,10 @@ return {
         "neovim/nvim-lspconfig",
         event = { "BufReadPost", "BufNewFile" },
         dependencies = {
-            { "williamboman/mason.nvim" },
+            { "williamboman/mason.nvim", config = true },
             { "williamboman/mason-lspconfig.nvim" },
-            { "j-hui/fidget.nvim", opts = {} }
+            { "j-hui/fidget.nvim", opts = {} },
+            { "folke/neodev.nvim", opts = {} }
         },
 
         config = function()
@@ -84,18 +85,39 @@ return {
                 end,
             })
 
-            -- Broadcast nvim-cmp capibilities to neovim
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-            -- Configure language servers here
             local servers = {
-                basedpyright = {
-                    analysis = {
-                        typeCheckingMode = "standard"
+                lua_ls = {
+                    settings = {
+                        Lua = {
+                            completion = {
+                                callSnippet = "Replace",
+                            }
+                        }
                     }
                 },
-                lua_ls = {},
+                basedpyright = {
+                    diagnostics = {
+                        underline = true,
+                        update_in_insert = false,
+                        virtual_text = {
+                            spacing = 4,
+                            source = "if_many",
+                            prefix = "●",
+                        },
+                    },
+                    severity_sort = true,
+                    inlay_hints = { enabled = true },
+                    settings = {
+                        basedpyright = {
+                            analysis = {
+                                typeCheckingMode = "standard"
+                            }
+                        }
+                    }
+                },
                 powershell_es = {}
             }
 
@@ -106,8 +128,9 @@ return {
                         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
                         require("lspconfig")[server_name].setup(server)
                     end,
-                },
+                }
             })
+
         end,
     },
 }
