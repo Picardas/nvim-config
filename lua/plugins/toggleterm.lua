@@ -23,11 +23,24 @@ return {
             group = term_group,
             pattern = { "*" },
             callback = function(event)
-                local map = function(keys, func)
-                    vim.keymap.set("t", keys, func, { buffer = event.buf } )
-                end
+                local buf = { buffer = event.buf }
+                -- Enter command mode with esc
+                vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], buf )
+                -- Default window commands
+                vim.keymap.set("t", "<C-w>j", "<cmd>wincmd j<cr>", buf )
+                vim.keymap.set("t", "<C-w>k", "<cmd>wincmd k<cr>", buf )
+                vim.keymap.set("t", "<C-w>h", "<cmd>wincmd h<cr>", buf )
+                vim.keymap.set("t", "<C-w>l", "<cmd>wincmd l<cr>", buf )
+                -- No confirmation with bd
+                vim.keymap.set("c", "bd<cr>", "bd!<cr>", buf )
 
-                map("<esc>", [[<C-\><C-n>]])
+                -- Disable colourcolum
+                vim.opt_local.colorcolumn = "0"
+                -- Always treat the terminal buffer as unmodified
+                vim.opt_local.modified = false
+                -- No scroll off
+                vim.opt_local.scrolloff = 0
+                vim.opt_local.sidescrolloff = 0
             end,
         })
         require("toggleterm").setup()

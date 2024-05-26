@@ -65,8 +65,6 @@ vim.cmd.aunmenu{ "PopUp.-1-" }
 -- Improve wordwrap breaks
 vim.opt.linebreak = true
 
-
-
 -- Using virtcolumn so line shown after character
 vim.opt_local.colorcolumn = "100"
 
@@ -92,11 +90,10 @@ vim.opt.confirm = true
 
 -- If Windows set pwsh as shell with additional configuration
 if vim.fn.has("win32") == 1 then
-    vim.opt.shell = "pwsh"
-    vim.opt.shellcmdflag =
-        "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
-    vim.opt.shellredir = '2>&1 | %{ "$_" } | Out-File %s; exit $LastExitCode'
-    vim.opt.shellpipe = '2>&1 | %{ "$_" } | Tee-Object %s; exit $LastExitCode'
+    vim.opt.shell = "pwsh -NoLogo"
+    vim.opt.shellcmdflag = "-NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+    vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+    vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
     vim.opt.shellquote = ""
     vim.opt.shellxquote = ""
 else
