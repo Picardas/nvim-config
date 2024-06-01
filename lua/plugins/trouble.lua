@@ -1,6 +1,5 @@
 return {
     "folke/trouble.nvim",
-    branch = "dev",
     cmd = { "TroubleToggle", "Trouble" },
     keys = {
         {
@@ -34,5 +33,5 @@ return {
             desc = "Quickfix List (Trouble)",
         },
     },
-    opts = { }
+    opts = {}
 }
