@@ -22,13 +22,11 @@ vim.opt.title = true
 -- Set completeopt to have a better completion experience
 vim.opt.completeopt = 'menuone,noselect'
 vim.opt.wildignorecase = true -- ignore filename and directory case
-vim.opt.pumblend = 10
+vim.opt.pumblend = 20
 vim.opt.wildmode = "full"
 vim.opt.wildoptions = "pum"
 vim.opt.wildignore = "__pycache__" -- Ignore python compile files
 vim.opt.wildignore:append { "*.o", "*.pyc", "*pycache*" } -- And more
-vim.keymap.set("c", "<Left>", [[<Space><BS><Left>]])
-vim.keymap.set("c", "<Right>", [[<Space><BS><Right>]])
 
 -- Partially transparent floating windows
 vim.opt.winblend = 20
