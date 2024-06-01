@@ -23,7 +23,7 @@ return {
                     ["<Tab>"] = cmp.mapping(function (fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
-                        elseif luasnip.jumpable(1) then
+                        elseif luasnip.locally_jumpable(1) then
                             luasnip.jump(1)
                         else
                             fallback()
@@ -32,7 +32,7 @@ return {
                     ["<S-Tab>"] = cmp.mapping(function (fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
+                        elseif luasnip.locally_jumpable(-1) then
                             luasnip.jump(-1)
                         else
                             fallback()
@@ -43,7 +43,19 @@ return {
                     ["<C-f>"] = cmp.mapping.scroll_docs(4),
 
                     -- Use Enter to accept the completion
-                    ["<CR>"] = cmp.mapping.confirm( { select = false }),
+                    ["<CR>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            if luasnip.expandable() then
+                                luasnip.expand()
+                            else
+                                cmp.confirm({
+                                    select = true,
+                                })
+                            end
+                        else
+                            fallback()
+                        end
+                    end),
 
                     -- Manually open and close the completion menu
                     ["<C-Space>"] = cmp.mapping.abort(),

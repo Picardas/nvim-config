@@ -10,10 +10,10 @@ vim.api.nvim_create_autocmd("TextChangedI", {
     group = comment_tw,
     callback = function()
         local context = require("cmp.config.context")
-            if context.in_treesitter_capture("string.documentation") == true then
-                vim.opt_local.formatoptions:append("t")
-            else
-                vim.opt_local.formatoptions:remove("t")
+        if context.in_treesitter_capture("string.documentation") == true then
+            vim.opt_local.formatoptions:append("t")
+        else
+            vim.opt_local.formatoptions:remove("t")
         end
     end
 })
