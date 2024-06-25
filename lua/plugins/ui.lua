@@ -1,4 +1,3 @@
-
 return {
     {
         "rebelot/kanagawa.nvim",
@@ -32,13 +31,16 @@ return {
             vim.g.lualine_laststatus = vim.o.laststatus
             if vim.fn.argc(-1) > 0 then
                 vim.o.statusline = " "
+            else
+                vim.opt.laststatus = 0
             end
         end,
 
         opts = {
             options = {
                 section_separators = "",
-                component_separators = "|",
+                component_separators = "│",
+                disabled_filetypes = { "neo-tree" }
             }
         },
         config = function(_, opts)
@@ -83,7 +85,10 @@ return {
         end,
     },
     {
-        "xiyaowong/virtcolumn.nvim"
+        "xiyaowong/virtcolumn.nvim",
+        init = function()
+            vim.g.virtcolumn_char = " │"
+        end
     },
     {
         "folke/zen-mode.nvim",
