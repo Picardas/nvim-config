@@ -277,7 +277,7 @@ return {
                     ["P"] = { "toggle_preview", config = { use_float = false }}
                 },
                 position = "right",
-                width = 26,
+                width = 32,
             }
         }
     }
