@@ -65,8 +65,18 @@ return {
         version = false,
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "natecraddock/telescope-zf-native.nvim",
-        },
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = function(plugin)
+                    local obj = vim.system({'cmake', '-S.', '-Bbuild', '-DCMAKE_BUILD_TYPE=Release'}, {cwd = plugin.dir}):wait()
+                    if obj.code ~= 0 then error(obj.stderr) end
+                    obj = vim.system({'cmake', '--build', 'build', '--config', 'Release'}, {cwd = plugin.dir}):wait()
+                    if obj.code ~= 0 then error(obj.stderr) end
+                    obj = vim.system({'cmake', '--install', 'build', '--prefix', 'build'}, {cwd = plugin.dir}):wait()
+                    if obj.code ~= 0 then error(obj.stderr) end
+                end
+            }
+      },
         cmd = "Telescope",
         keys = {
             {
@@ -111,8 +121,16 @@ return {
                         n = { ["<C-t"] = open_with_trouble }
                     }
                 },
+                extensions = {
+                    fzf = {
+                        fuzzy = true,
+                        override_generic_sorter = true,
+                        override_file_sorter = true,
+                        case_mode = "smart_case"
+                    }
+                }
             })
-            require("telescope").load_extension("zf-native")
+            require("telescope").load_extension("fzf")
         end,
     },
     {
