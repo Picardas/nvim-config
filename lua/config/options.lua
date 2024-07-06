@@ -47,7 +47,7 @@ vim.opt.shiftwidth = 4
 vim.opt.shiftround = true
 
 -- Time in ms, if nothing is type, that swap file will be updated (default 4000)
--- vim.opt.updatetime = 250
+vim.opt.updatetime = 250
 
 -- Time in ms for key sequence to complete (default 1000)
 -- vim.opt.timeoutlen = 800
@@ -89,9 +89,9 @@ vim.opt.confirm = true
 -- If Windows set pwsh as shell with additional configuration
 if vim.fn.has("win32") == 1 then
     vim.opt.shell = "pwsh"
-    vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
-    vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-    vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+    vim.opt.shellcmdflag = "-NoLogo -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;$PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText;"
+    vim.opt.shellredir = "2>&1 | %%{ '$_' } | Out-File %s; exit $LastExitCode"
+    vim.opt.shellpipe = "2>&1 | %%{ '$_' } | Tee-Object %s; exit $LastExitCode"
     vim.opt.shellquote = ""
     vim.opt.shellxquote = ""
 else

@@ -8,7 +8,7 @@ return {
             if vim.fn.argc(-1) > 0 then
                 vim.o.statusline = " "
             else
-                vim.opt.laststatus = 0
+                vim.opt.laststatus = 3
             end
         end,
 
@@ -16,7 +16,7 @@ return {
             options = {
                 section_separators = "",
                 component_separators = "│",
-                disabled_filetypes = { "neo-tree" }
+                disabled_filetypes = { "neo-tree", "toggleterm" }
             }
         },
         config = function(_, opts)
@@ -32,7 +32,23 @@ return {
         "lukas-reineke/indent-blankline.nvim",
         event = { "BufReadPost", "BufNewFile"},
         main = "ibl",
-        opts = {}
+        opts = {
+            indent = {
+                char = "│",
+                tab_char = "│"
+            },
+            scope = { show_start = false, show_end = false },
+            exclude = {
+                filetypes = {
+                    "neo-tree",
+                    "Trouble",
+                    "trouble",
+                    "lazy",
+                    "mason",
+                    "toggleterm"
+                }
+            }
+        }
     },
     {
         "https://github.com/RRethy/vim-illuminate",
@@ -78,5 +94,15 @@ return {
                 }
             }
         }
+    },
+    {
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons"
+        },
+        opts = {}
     }
 }

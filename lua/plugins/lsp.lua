@@ -1,19 +1,18 @@
 return {
     {
-        "williamboman/mason.nvim",
-        cmd = "Mason",
-        build = ":MasonUpdate",
-        opts = {}
-    },
-    {
         -- Lspconfig
         "neovim/nvim-lspconfig",
         event = { "BufReadPost", "BufNewFile" },
         dependencies = {
-            { "williamboman/mason.nvim", config = true },
+            {
+                "williamboman/mason.nvim",
+                cmd = "Mason",
+                build = ":MasonUpdate",
+                config = true
+            },
             { "williamboman/mason-lspconfig.nvim" },
-            { "j-hui/fidget.nvim", opts = {} },
-            { "folke/neodev.nvim", opts = {} }
+            { "j-hui/fidget.nvim", config = true },
+            { "folke/neodev.nvim", config = true }
         },
 
         config = function()
@@ -54,7 +53,15 @@ return {
             })
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+            local workspace_capabilities = {
+                workspace = {
+                    fileOperations = {
+                        didRename = true,
+                        willRename = true
+                    }
+                }
+            }
+            capabilities = vim.tbl_deep_extend("force", capabilities, workspace_capabilities, require("cmp_nvim_lsp").default_capabilities())
 
             local servers = {
                 lua_ls = {
@@ -67,17 +74,6 @@ return {
                     }
                 },
                 basedpyright = {
-                    diagnostics = {
-                        underline = true,
-                        update_in_insert = false,
-                        virtual_text = {
-                            spacing = 4,
-                            source = "if_many",
-                            prefix = "●",
-                        },
-                    },
-                    severity_sort = true,
-                    inlay_hints = { enabled = true },
                     settings = {
                         basedpyright = {
                             analysis = {
@@ -90,7 +86,24 @@ return {
             }
 
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "basedpyright", "powershell_es"},
+                ensure_installed = vim.tbl_keys(servers or {}),
+                diagnostics = {
+                    underline = true,
+                    update_in_insert = false,
+                    virtual_text = {
+                        spacing = 4,
+                        source = "if_many",
+                        prefix = "●"
+                    },
+                    severity_sort = true,
+                },
+                inlay_hints = {
+                    enabled = true,
+                    exclude = {}
+                },
+                codelens = {
+                    enabled = true
+                },
                 handlers = {
                     function(server_name)
                         local server = servers[server_name] or {}
@@ -99,6 +112,17 @@ return {
                     end,
                 }
             })
+
+            local signs = {
+                Error = " ",
+                Warn = " ",
+                Hint = " ",
+                Info = " "
+            }
+            for type, icon in pairs(signs) do
+                local hl = "DiagnosticSign" .. type
+                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+            end
 
         end,
     },

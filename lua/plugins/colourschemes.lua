@@ -3,24 +3,11 @@ return {
         "rebelot/kanagawa.nvim",
         lazy = false,
         priority = 1000,
-        opts = {
-            overrides = function(colors)
-                return {
-                    -- Block-like modern Telescope UI
-                    TelescopeTitle = { fg = colors.theme.ui.special, bold = true },
-                    TelescopePromptNormal = { bg = colors.theme.ui.bg_p1 },
-                    TelescopePromptBorder = { fg = colors.theme.ui.bg_p1, bg = colors.theme.ui.bg_p1 },
-                    TelescopeResultsNormal = { fg = colors.theme.ui.fg_dim, bg = colors.theme.ui.bg_m1 },
-                    TelescopeResultsBorder = { fg = colors.theme.ui.bg_m1, bg = colors.theme.ui.bg_m1 },
-                    TelescopePreviewNormal = { bg = colors.theme.ui.bg_dim },
-                    TelescopePreviewBorder = { bg = colors.theme.ui.bg_dim, fg = colors.theme.ui.bg_dim },
-                }
-            end,
-        },
+        opts = {},
     },
     {
         "catppuccin/nvim",
-        name = "gruvuccin",
+        name = "catppuccin",
         lazy = false,
         priority = 1000,
         opts = {
@@ -95,7 +82,24 @@ return {
                 gitsigns = true,
                 hop = true,
                 illuminate = { enabled = true },
-                native_lsp = { enabled = true, inlay_hints = { background = true } },
+                indent_blankline = {
+                    enabled = true,
+                    scope_color = "",
+                    colored_indent_levels = true,
+                },
+                native_lsp = {
+                    enabled = true,
+                    inlay_hints = {
+                        background = true
+                    },
+                    underlines = {
+                        errors = { "undercurl" },
+                        hints = { "undercurl" },
+                        warnings = { "undercurl" },
+                        information = { "undercurl" },
+                        ok = { "undercurl" },
+                    }
+                },
                 neogit = true,
                 neotree = true,
                 semantic_tokens = true,
@@ -372,10 +376,11 @@ return {
                 end,
             },
         },
-        config = function(_, opts)
-            require("catppuccin").setup(opts)
-
-            vim.api.nvim_command("colorscheme catppuccin")
-        end,
+    },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        opts = {},
     }
 }
