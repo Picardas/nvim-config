@@ -1,4 +1,3 @@
-
 -- [[ Wild Menu Keybinds ]]
 
 -- Enter to accept command line completions
